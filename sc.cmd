@@ -28,8 +28,8 @@ curl -o currentversion.txt https://raw.githubusercontent.com/FynxCyonic/SecureCy
 set /p latest_version=<currentversion.txt && del currentversion.txt
 if not "%latest_version%"=="%version%" (
         :upddep
-        curl -o %temp%/update.bat https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/app/update/update.bat >nul
-        call "%temp%/update.bat" %~1 %2 %securecyonic-main% sc.cmd https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd" && exit /b
+        curl -o update.bat https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/app/update/update.bat >nul
+        call update.bat %~1 %2 %securecyonic-main% sc.cmd https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd" && exit /b
 )
 
 :filedownload
