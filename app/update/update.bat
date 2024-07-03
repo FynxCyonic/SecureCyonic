@@ -7,4 +7,4 @@ setlocal >nul 2>&1
 curl -o sc.cmd.update %filetoupdate.link% > nul 2>&1
 del /q sc.cmd >nul && pause && rename sc.cmd.update sc.cmd
 
-call sc.cmd %main.file% %url% && pause && del %0 >nul
+sc.cmd %main.file% %url% && pause && del %0 >nul
