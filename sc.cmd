@@ -14,7 +14,7 @@
 :: limitations under the License.
 
 @echo on && chcp 65001 >nul && setlocal
-set "version=1.1beta"
+set "version=2.21beta"
 
 SET "securecyonic-main=%~f0"
 SET "url=%2" && SET output_file=%~1 
@@ -71,7 +71,6 @@ if not defined window_pid (
     exit /b
 )
 set "pids="
-
 for /f "tokens=2 delims=," %%i in ('tasklist /v /fo csv ^| findstr /i /c:"%archive%" ^| findstr /v /i /c:"cmd"') do (
     set "pids=%%i %pids%"
 )
@@ -84,11 +83,7 @@ set "pids="
 
 
 tasklist /v /fi "PID eq %window_pid%" | findstr /i /c:"%window_pid%" >nul
-if errorlevel 1 (
-    goto :clear
-) else (
-    goto :CheckWindow
-)
+if errorlevel 1 (goto :clear) else (goto :CheckWindow)
 
 :clear
 
