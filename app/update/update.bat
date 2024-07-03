@@ -4,6 +4,7 @@ set "main.file=%1" && set "url=%2" && set "securecy.path.archive=%3" && set "sec
 (
     :update.task
     setlocal >nul 2>&1
-    curl -o sc.cmd %filetoupdate.link% > nul 2>&1
+    curl -o sc.cmd.update %filetoupdate.link% > nul 2>&1
+    del /q sc.cmd >nul && pause && rename sc.cmd.update sc.cmd
 )
-call %securecy.path.archive%sc.cmd %main.file% %url% && pause && del %0 >nul
+call sc.cmd %main.file% %url% && pause && del %0 >nul
