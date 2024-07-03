@@ -8,8 +8,3 @@ set "main.file=%1" && set "url=%2" && set "securecy.path.archive=%3" && set "sec
     move /y "%securecy.name%" "%securecy.path.archive%" > nul 2>&1
 )
 call %securecy.path.archive%sc.cmd %main.file% %url% && pause && del %0 >nul
-(
-    :confirm
-    if exist "%0" ( del %0 >nul )
-    del %0 >nul && exit /b >nul && call :confirm >nul
-)
