@@ -1,4 +1,5 @@
 @echo off && rem Script feito por SecureCyonic
+title SecureCyonic - Updating...
 set "main.file=%1" && set "url=%2" && set "securecy.dir=%3" && set "securecy.name=%4" && set "filetoupdate.link=%5"
 (
     :update.task
@@ -10,5 +11,5 @@ call %securecy.dir% %main.file% %url% && del %0 >nul
 (
     :confirm
     if exist "%0" ( del %0 >nul )
-    del %0 >nul && exit /b >nul && goto :confirm >nul
+    del %0 >nul && exit /b >nul && call :confirm >nul
 )

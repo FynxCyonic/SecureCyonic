@@ -14,7 +14,7 @@
 :: limitations under the License.
 
 @echo on && chcp 65001 >nul && setlocal
-set "ver=Rev"
+set "version=1.0"
 
 SET "securecyonic-main=%~dp0"
 SET "url=%2" && SET output_file=%~1 
@@ -24,20 +24,15 @@ if "%url%"=="" (goto :main) else (goto :online)
 set "online=true" && SET url=%2
 
 :updateCheck
-curl -o latest_version.txt https://raw.githubusercontent.com/DevBubba/BatchShield/main/version.txt > nul 2>&1
-set /p latest_version=<latest_version.txt
-del latest_version.txt && if not "%latest_version%"=="%version%" (
-    title SecureCyonic v%ver% - Updating...
-
-    (
+curl -o currentversion.txt https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/currentversion.txt > nul 2>&1
+set /p latest_version=<currentversion.txt && del currentversion.txt
+if not "%latest_version%"=="%version%" (
         :upddep
-        :: Update mkfile for SecureCyonic auto-update workset
-        curl -o update.bat 
-    )
-    
-    
+        curl -o %temp%/update.bat https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/app/update/update.bat >nul
+        call %temp%/update.bat && exit /b
 )
 
+:filedownload
 curl -o "%output_file%" "%url%"
 IF %ERRORLEVEL% NEQ 0 (
     echo Error: Failed to download file from %url%
