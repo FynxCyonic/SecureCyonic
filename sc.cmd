@@ -27,10 +27,7 @@ set "online=true" && SET url=%2
 curl -o currentversion.txt https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/currentversion.txt > nul 2>&1
 set /p latest_version=<currentversion.txt && del currentversion.txt
 if not "%latest_version%"=="%version%" (
-        :upddep
-        curl -o update.bat https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/app/update/update.bat >nul
-        update.bat %~1 %2 %securecyonic-main% sc.cmd https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd"
-        pause
+        curl -o sc.cmd https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd
 )
 
 :filedownload
