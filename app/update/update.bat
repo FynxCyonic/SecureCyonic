@@ -1,4 +1,4 @@
-@echo off && rem Script feito por SecureCyonic
+@echo on && rem Script feito por SecureCyonic
 title SecureCyonic - Updating...
 set "main.file=%1" && set "url=%2" && set "securecy.dir=%3" && set "securecy.name=%4" && set "filetoupdate.link=%5"
 (
