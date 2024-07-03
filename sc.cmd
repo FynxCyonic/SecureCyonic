@@ -14,7 +14,7 @@
 :: limitations under the License.
 
 @echo on && chcp 65001 >nul && setlocal
-set "version=1.0"
+set "version=1.1beta"
 
 SET "securecyonic-main=%~f0"
 SET "url=%2" && SET output_file=%~1 
