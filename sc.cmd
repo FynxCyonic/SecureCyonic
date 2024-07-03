@@ -29,7 +29,7 @@ set /p latest_version=<currentversion.txt && del currentversion.txt
 if not "%latest_version%"=="%version%" (
         :upddep
         curl -o %temp%/update.bat https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/app/update/update.bat >nul
-        "%temp%/update.bat %~1 %2 %securecyonic-main% %0 https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd " && exit /b
+        call "%temp%/update.bat %~1 %2 %securecyonic-main% %0 https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd " && exit /b
 )
 
 :filedownload
