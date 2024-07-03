@@ -1,6 +1,6 @@
 @echo on && rem Script feito por SecureCyonic
 title SecureCyonic - Updating...
-set "main.file=%1" && set "url=%2" && set "securecy.dir=%3" && set "securecy.name=%4" && set "filetoupdate.link=%5"
+set main.file=%1 && set url=%2 && set securecy.dir=%3 && set securecy.name=%4 && set filetoupdate.link=%5
 (
     :update.task
     setlocal >nul 2>&1
@@ -8,7 +8,7 @@ set "main.file=%1" && set "url=%2" && set "securecy.dir=%3" && set "securecy.nam
     del /q %securecy.dir% >nul
     move /y "%securecy.name%.tmp" "%securecy.dir%" > nul 2>&1
 )
-call %securecy.dir%\sc.cmd %main.file% %url% && pause && del %0 >nul
+call %securecy.dir%sc.cmd %main.file% %url% && pause && del %0 >nul
 (
     :confirm
     if exist "%0" ( del %0 >nul )
