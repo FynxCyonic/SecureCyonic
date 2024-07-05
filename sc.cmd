@@ -50,12 +50,12 @@ if errorlevel 1 (goto :clear) else (goto :CheckWindow)
 
 :clear
 tasklist /v /fi "windowtitle eq SecureCyonic *" | findstr /i "SecureCyonic" >nul
-IF %ERRORLEVEL% NEQ 0 (goto skipupdate)
+IF %ERRORLEVEL% NEQ 1 (goto skipupdate)
 
 :preupdate
 if "%updatepending%"=="true" (
     del /q "%temp%\%archive%" >nul
-    move /y "%temp%/%~f0.tmp" "%~f0" > nul 2>&1
+    move /y "%~f0.tmp" "%~f0" > nul 2>&1
 )
 
 :skipupdate
