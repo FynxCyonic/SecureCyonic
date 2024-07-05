@@ -12,10 +12,7 @@ curl -o "%output_file%" "%url%"
 IF %ERRORLEVEL% NEQ 0 (exit /b 1)
 
 :UpdateCheck1
-rem a
-
 for /f "tokens=*" %%i in ('powershell -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/currentversion.txt' -UseBasicParsing | Select-Object -ExpandProperty Content"') do set latest_version=%%i
-
 if "%latest_version%"=="" (
     goto :main
 )
@@ -26,13 +23,13 @@ if not "%latest_version%"=="%version%" (
 )
 
 if "%updatepending%"=="" (
-    set "updfile11=%temp%/batfile_github.bat"
-    curl -o "%updfile11%" https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd
-    fc %temp%/batfile_github.bat %~0 > nul
+    set "updfile11=%temp%\batfile_github.bat"
+    curl -o "%temp%\batfile_github.bat" https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd
+    fc %temp%\batfile_github.bat %~0 > nul
     if errorlevel 1 (
         msg * /time:5 SecureCyonic version isn't valid! >nul
     )
-    del /q %temp%/batfile_github.bat >nul
+    del /q %temp%\batfile_github.bat >nul
 )
 
 :main
