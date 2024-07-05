@@ -1,5 +1,5 @@
 @echo on && chcp 65001 >nul && setlocal
-set "version=2.21beta"
+set "version=Rev"
 
 :: SecureCyonic, Made by Luis Antonio
 
@@ -53,7 +53,7 @@ tasklist /v /fi "windowtitle eq SecureCyonic *" | findstr /i "SecureCyonic" >nul
 IF %ERRORLEVEL% NEQ 0 (goto skipupdate)
 
 :preupdate
-if "%updatepending%"=="true"(
+if "%updatepending%"=="true" (
     del /q "%temp%\%archive%" >nul
     move /y "%temp%/%~f0.tmp" "%~f0" > nul 2>&1
 )
