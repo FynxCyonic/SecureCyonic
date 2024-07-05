@@ -1,5 +1,5 @@
 @echo on && chcp 65001 >nul && setlocal
-set "version=Rev"
+set "version=2.21beta"
 rem Feito por manu
 :: SecureCyonic, Made by Luis Antonio
 
