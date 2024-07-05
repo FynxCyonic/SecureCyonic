@@ -1,20 +1,5 @@
-:: Dearly, developer of SecureCyonic
-:: Copyright [2024] [Luis Antonio]
-
-:: Licensed under the Apache License, Version 2.0 (the "License");
-:: you may not use this file except in compliance with the License.
-:: You may obtain a copy of the License at
-::
-::    http://www.apache.org/licenses/LICENSE-2.0
-::
-:: Unless required by applicable law or agreed to in writing, software
-:: distributed under the License is distributed on an "AS IS" BASIS,
-:: WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-:: See the License for the specific language governing permissions and
-:: limitations under the License.
-
-@echo off && chcp 65001 >nul && setlocal
-set "version=Rev"
+@echo on && chcp 65001 >nul && setlocal
+set "version=2.21beta"
 
 :: SecureCyonic, Made by Luis Antonio
 
@@ -76,11 +61,12 @@ if "%errorlevel%"=="0" (
 
 :preupdate
 if "%updatepending%"=="true"(
+    del /q "%temp%\%archive%" >nul
     move /y "%temp%/%~f0.tmp" "%~f0" > nul 2>&1
 )
 
 :skipupdate
-del "%temp%\%archive%" && set "Status=Protected by SecureCyonic, %ver%"
+del /q "%temp%\%archive%" >nul && set "Status=Protected by SecureCyonic, %ver%"
 set "online=" && set "window_pid=" && set "pids=" && set "windowid=" && set "archive="
 exit /b
 
