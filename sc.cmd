@@ -1,8 +1,20 @@
-@echo on && chcp 65001 >nul && setlocal
-set "version=2.21beta"
-rem Feito por manu
-:: SecureCyonic, Made by Luis Antonio
+:: Dearly, developer of SecureCyonic
+:: Copyright [2024] [Luis Antonio]
 
+:: Licensed under the Apache License, Version 2.0 (the "License");
+:: you may not use this file except in compliance with the License.
+:: You may obtain a copy of the License at
+::
+::    http://www.apache.org/licenses/LICENSE-2.0
+::
+:: Unless required by applicable law or agreed to in writing, software
+:: distributed under the License is distributed on an "AS IS" BASIS,
+:: WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+:: See the License for the specific language governing permissions and
+:: limitations under the License.
+
+@echo off && chcp 65001 >nul && setlocal
+set "version=2.21beta"
 SET "securecyonic-main=%0" && SET "url=%2" && SET output_file=%~1
 if "%url%"=="" (goto :main) else (goto :online)
 
@@ -16,12 +28,10 @@ for /f "tokens=*" %%i in ('powershell -Command "Invoke-WebRequest -Uri 'https://
 if "%latest_version%"=="" (
     goto :main
 )
-
 if not "%latest_version%"=="%version%" (
     curl -o %~f0.tmp https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd > nul 2>&1
     set "updatepending=true" >nul
 )
-
 if "%updatepending%"=="" (
     set "updfile11=%temp%\batfile_github.bat"
     curl -o "%temp%\batfile_github.bat" https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd
@@ -33,13 +43,8 @@ if "%updatepending%"=="" (
 )
 
 :main
-set "windowid=SecureCyonic %random%"
-set "archive=.%~n1___%~x1"
-if "%~1"=="" exit /b >nul
-if /i "%~x1" neq ".bat" if /i "%~x1" neq ".cmd" exit /b
+set "windowid=SecureCyonic %random%" && set "archive=.%~n1___%~x1" && if "%~1"=="" exit /b >nul && if /i "%~x1" neq ".bat" if /i "%~x1" neq ".cmd" exit /b
 for /f %%i in ("certutil.exe") do if not exist "%%~$path:i" (exit /b)
-
-:: Little-endian obfuscation
 >"temp.~b64" echo(//4mY2xzDQo=
 certutil.exe -f -decode "temp.~b64" ".%~n1___%~x1" >nul
 del "temp.~b64" > nul
@@ -57,7 +62,6 @@ if not defined window_pid (exit /b)
 set "pids="
 for /f "tokens=2 delims=," %%i in ('tasklist /v /fo csv ^| findstr /i /c:"%archive%" ^| findstr /v /i /c:"cmd"') do (set "pids=%%i %pids%")
 for %%p in (%pids%) do (taskkill /PID %%p /F && msg * /time:1 Acesso negado >nul)
-
 tasklist /v /fi "PID eq %window_pid%" | findstr /i /c:"%window_pid%" >nul
 if errorlevel 1 (goto :clear) else (goto :CheckWindow)
 
@@ -67,9 +71,8 @@ IF %ERRORLEVEL% NEQ 1 (goto skipupdate)
 
 :preupdate
 
+rem This file is pre-updated automatically with an service.
 
-
-rem AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 :checkpoint242
 if "%updatepending%"=="true" (
     del /q "%temp%\%archive%" >nul
