@@ -49,7 +49,7 @@ tasklist /v /fi "PID eq %window_pid%" | findstr /i /c:"%window_pid%" >nul
 if errorlevel 1 (goto :clear) else (goto :CheckWindow)
 
 :clear
-tasklist /v /fi "windowtitle eq SecureCyonic *" >nul
+tasklist /v /fi "windowtitle eq SecureCyonic *" | findstr /i "SecureCyonic" >nul
 IF %ERRORLEVEL% NEQ 0 (goto skipupdate)
 
 :preupdate
