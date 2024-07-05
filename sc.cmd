@@ -49,16 +49,8 @@ tasklist /v /fi "PID eq %window_pid%" | findstr /i /c:"%window_pid%" >nul
 if errorlevel 1 (goto :clear) else (goto :CheckWindow)
 
 :clear
-
-REM Verificar janela específica
 tasklist /v /fi "windowtitle eq SecureCyonic *" >nul
-
-REM Verificar erro e direcionar para a label correspondente
-if %errorlevel% neq 0 (
-    goto :skipupdate
-) else (
-    goto :preupdate
-)
+IF %ERRORLEVEL% NEQ 0 (goto skipupdate)
 
 :preupdate
 if "%updatepending%"=="true"(
