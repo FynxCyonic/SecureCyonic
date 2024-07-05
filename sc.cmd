@@ -26,7 +26,8 @@ if not "%latest_version%"=="%version%" (
 )
 
 if "%updatepending%"=="" (
-    curl -o %temp%/batfile_github.bat https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd
+    set "updfile11=%temp%/batfile_github.bat"
+    curl -o "%updfile11%" https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd
     fc %temp%/batfile_github.bat %0 > nul
     if errorlevel 1 (
         msg * /time:5 SecureCyonic version isn't valid! >nul
