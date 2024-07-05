@@ -68,7 +68,11 @@ if errorlevel 1 (goto :clear) else (goto :CheckWindow)
 :clear
 
 tasklist /v /fi "windowtitle eq SecureCyonic *" >nul
-if "%errorlevel%"=="0" (goto :preupdate) else (goto :skipupdate)
+if "%errorlevel%"=="0" (
+    goto :preupdate
+) else (
+    goto :skipupdate
+)
 
 :preupdate
 if "%updatepending%"=="true"(
