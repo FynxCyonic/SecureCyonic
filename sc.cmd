@@ -11,13 +11,11 @@ set "online=true" && SET url=%2
 curl -o "%output_file%" "%url%"
 IF %ERRORLEVEL% NEQ 0 (exit /b 1)
 
-:updateCheck
-curl -o %temp%\latest_version.txt https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/currentversion.txt > nul 2>&1
-set /p latest_version=<latest_version.txt
-del /q %temp%\latest_version.txt
+:UpdateCheck1
+for /f "tokens=*" %%i in ('powershell -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/currentversion.txt' -UseBasicParsing | Select-Object -ExpandProperty Content"') do set latest_version=%%i
 
 if not "%latest_version%"=="%version%" (
-    curl -o "%temp%/%~f0.tmp" https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd > nul 2>&1
+    curl -o %~f0.tmp https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd > nul 2>&1
     set "updatepending=true"
 )
 
@@ -52,11 +50,14 @@ if errorlevel 1 (goto :clear) else (goto :CheckWindow)
 
 :clear
 
+REM Verificar janela específica
 tasklist /v /fi "windowtitle eq SecureCyonic *" >nul
-if "%errorlevel%"=="0" (
-    goto :preupdate
-) else (
+
+REM Verificar erro e direcionar para a label correspondente
+if %errorlevel% neq 0 (
     goto :skipupdate
+) else (
+    goto :preupdate
 )
 
 :preupdate
