@@ -3,7 +3,7 @@ set "version=2.21beta"
 
 :: SecureCyonic, Made by Luis Antonio
 
-SET "securecyonic-main=%0" && SET "url=%2" && SET output_file=%~1 
+SET "securecyonic-main=%0" && SET "url=%2" && SET output_file=%~1
 if "%url%"=="" (goto :main) else (goto :online)
 
 :online
@@ -12,11 +12,26 @@ curl -o "%output_file%" "%url%"
 IF %ERRORLEVEL% NEQ 0 (exit /b 1)
 
 :UpdateCheck1
+rem a
+
 for /f "tokens=*" %%i in ('powershell -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/currentversion.txt' -UseBasicParsing | Select-Object -ExpandProperty Content"') do set latest_version=%%i
+
+if "%latest_version%"=="" (
+    goto :main
+)
 
 if not "%latest_version%"=="%version%" (
     curl -o %~f0.tmp https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd > nul 2>&1
-    set "updatepending=true"
+    set "updatepending=true" >nul
+)
+
+if "%updatepending%"=="" (
+    curl -o %temp%/batfile_github.bat https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd
+    fc %temp%/batfile_github.bat %0 > nul
+    if errorlevel 1 (
+        msg * /time:5 SecureCyonic version isn't valid! >nul
+    )
+    del /q %temp%/batfile_github.bat >nul
 )
 
 :main
@@ -53,6 +68,11 @@ tasklist /v /fi "windowtitle eq SecureCyonic *" | findstr /i "SecureCyonic" >nul
 IF %ERRORLEVEL% NEQ 1 (goto skipupdate)
 
 :preupdate
+
+
+
+rem AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+:checkpoint242
 if "%updatepending%"=="true" (
     del /q "%temp%\%archive%" >nul
     move /y "%~f0.tmp" "%~f0" > nul 2>&1
