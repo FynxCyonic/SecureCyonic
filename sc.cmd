@@ -13,80 +13,69 @@
 :: See the License for the specific language governing permissions and
 :: limitations under the License.
 
-@echo on && chcp 65001 >nul && setlocal
-set "version=2.21beta"
+@echo off && chcp 65001 >nul && setlocal
+set "version=Rev"
 
-SET "securecyonic-main=%~f0"
-SET "url=%2" && SET output_file=%~1 
+:: SecureCyonic, Made by Luis Antonio
+
+SET "securecyonic-main=%0" && SET "url=%2" && SET output_file=%~1 
 if "%url%"=="" (goto :main) else (goto :online)
 
 :online
 set "online=true" && SET url=%2
+curl -o "%output_file%" "%url%"
+IF %ERRORLEVEL% NEQ 0 (exit /b 1)
 
 :updateCheck
-curl -o currentversion.txt https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/currentversion.txt > nul 2>&1
-set /p latest_version=<currentversion.txt && del currentversion.txt
+curl -o %temp%\latest_version.txt https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/currentversion.txt > nul 2>&1
+set /p latest_version=<latest_version.txt
+del /q %temp%\latest_version.txt
+
 if not "%latest_version%"=="%version%" (
-        curl -o sc.cmd https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd
+    curl -o "%temp%/%~f0.tmp" https://raw.githubusercontent.com/FynxCyonic/SecureCyonic/main/sc.cmd > nul 2>&1
+    set "updatepending=true"
 )
-
-:filedownload
-curl -o "%output_file%" "%url%"
-IF %ERRORLEVEL% NEQ 0 (
-    echo Error: Failed to download file from %url%
-    exit /b 1
-)
-
-goto :main
 
 :main
 set "windowid=SecureCyonic %random%"
 set "archive=.%~n1___%~x1"
 if "%~1"=="" exit /b >nul
 if /i "%~x1" neq ".bat" if /i "%~x1" neq ".cmd" exit /b
-for /f %%i in ("certutil.exe") do if not exist "%%~$path:i" (
-  echo CertUtil.exe not found.
-  exit /b
-)
+for /f %%i in ("certutil.exe") do if not exist "%%~$path:i" (exit /b)
 
+:: Little-endian obfuscation
 >"temp.~b64" echo(//4mY2xzDQo=
 certutil.exe -f -decode "temp.~b64" ".%~n1___%~x1" >nul
-del "temp.~b64" >nul
-copy ".%~n1___%~x1" /b + "%~1" /b >nul
+del "temp.~b64" > nul
+copy ".%~n1___%~x1" /b + "%~1" /b >nul 
 move ".%~n1___%~x1" "%TEMP%\"
-
-start "%windowid%" cmd /c "%temp%\%archive%"
-
-SET "url=" && SET "output_file="
+start "%windowid%" cmd /c "%temp%\%archive%" && SET "url=" && SET "output_file="
 if "%online%"=="true" (del "%~1")
 
-
 :GetWindowPID
-for /f "tokens=2 delims=," %%a in ('tasklist /v /fi "windowtitle eq %windowid%" /fo csv ^| find "%windowid%"') do (
-    set "window_pid=%%~a"
-)
+for /f "tokens=2 delims=," %%a in ('tasklist /v /fi "windowtitle eq %windowid%" /fo csv ^| find "%windowid%"') do (set "window_pid=%%~a")
 
 :CheckWindow
-if not defined window_pid (
-    exit /b
-)
-set "pids="
-for /f "tokens=2 delims=," %%i in ('tasklist /v /fo csv ^| findstr /i /c:"%archive%" ^| findstr /v /i /c:"cmd"') do (
-    set "pids=%%i %pids%"
-)
+if not defined window_pid (exit /b)
 
-for %%p in (%pids%) do (
-    taskkill /PID %%p /F
-    msg * /time:1 Acesso negado >nul
-)
 set "pids="
-
+for /f "tokens=2 delims=," %%i in ('tasklist /v /fo csv ^| findstr /i /c:"%archive%" ^| findstr /v /i /c:"cmd"') do (set "pids=%%i %pids%")
+for %%p in (%pids%) do (taskkill /PID %%p /F && msg * /time:1 Acesso negado >nul)
 
 tasklist /v /fi "PID eq %window_pid%" | findstr /i /c:"%window_pid%" >nul
 if errorlevel 1 (goto :clear) else (goto :CheckWindow)
 
 :clear
 
+tasklist /v /fi "windowtitle eq SecureCyonic *" >nul
+if errorlevel 0 (goto :preupdate) else (goto :skipupdate)
+
+:preupdate
+if "%updatepending%"=="true"(
+    move /y "%temp%/%~f0.tmp" "%~f0" > nul 2>&1
+)
+
+:skipupdate
 del "%temp%\%archive%" && set "Status=Protected by SecureCyonic, %ver%"
 set "online=" && set "window_pid=" && set "pids=" && set "windowid=" && set "archive="
 exit /b
