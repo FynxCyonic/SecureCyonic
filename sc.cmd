@@ -70,7 +70,6 @@ tasklist /v /fi "windowtitle eq SecureCyonic *" | findstr /i "SecureCyonic" >nul
 IF %ERRORLEVEL% NEQ 1 (goto skipupdate)
 
 :preupdate
-
 rem This file is pre-updated automatically with an service.
 
 :checkpoint242
